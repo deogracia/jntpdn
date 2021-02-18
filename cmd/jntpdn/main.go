@@ -8,8 +8,15 @@ The full text can also be found:
 */
 package main
 
-import "github.com/deogracia/jntpdn/cmd"
+import (
+	"log"
+
+	"github.com/deogracia/jntpdn/cmd"
+)
 
 func main() {
-	cmd.Execute()
+	root := cmd.RootCmd()
+	if err := root.Execute(); err != nil {
+		log.Fatal(err)
+	}
 }

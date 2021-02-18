@@ -10,16 +10,18 @@ The full text can also be found:
 package cmd
 
 import (
-	"os"
-
+	"github.com/deogracia/jntpdn/internal/app"
 	"github.com/spf13/cobra"
 )
 
-// completionCmd represents the completion command
-var completionCmd = &cobra.Command{
-	Use:   "completion [bash|zsh|fish|powershell]",
-	Short: "Generate completion script",
-	Long: `To load completions:
+func completionCmd() *cobra.Command {
+
+	a := app.New()
+	// completionCmd represents the completion command
+	var completionCmd = &cobra.Command{
+		Use:   "completion [bash|zsh|fish|powershell]",
+		Short: "Generate completion script",
+		Long: `To load completions:
 
 Bash:
 
@@ -50,38 +52,13 @@ $ jntpdn completion fish | source
 # To load completions for each session, execute once:
 $ jntpdn completion fish > ~/.config/fish/completions/jntpdn.fish
 `,
-	DisableFlagsInUseLine: true,
-	ValidArgs:             []string{"bash", "zsh", "fish", "powershell"},
-	Args:                  cobra.ExactValidArgs(1),
-	RunE: func(cmd *cobra.Command, args []string) error {
-		var err error
-		switch args[0] {
-		case "bash":
-			err = cmd.Root().GenBashCompletion(os.Stdout)
-		case "zsh":
-			err = cmd.Root().GenZshCompletion(os.Stdout)
-		case "fish":
-			err = cmd.Root().GenFishCompletion(os.Stdout, true)
-		case "powershell":
-			err = cmd.Root().GenPowerShellCompletion(os.Stdout)
-		}
-		if err != nil {
-			return err
-		}
-		return nil
-	},
-}
+		DisableFlagsInUseLine: true,
+		ValidArgs:             []string{"bash", "zsh", "fish", "powershell"},
+		Args:                  cobra.ExactValidArgs(1),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			return a.ShellCompletion(cmd, args)
+		},
+	}
 
-func init() {
-	rootCmd.AddCommand(completionCmd)
-
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// completionCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// completionCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	return completionCmd
 }

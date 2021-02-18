@@ -26,6 +26,7 @@ build:
 		-arch=$(XC_ARCH) \
 		-parallel=$(XC_PARALLEL) \
 		-output=$(OUTPUT)/$(NAME)_{{.OS}}_{{.Arch}} \
+		github.com/deogracia/jntpdn/cmd/jntpdn \
 		;
 
 	gox \
@@ -33,6 +34,7 @@ build:
 		-arch=$(XC_DARWIN_ARCH) \
 		-parallel=$(XC_PARALLEL) \
 		-output=$(OUTPUT)/$(NAME)_{{.OS}}_{{.Arch}} \
+		github.com/deogracia/jntpdn/cmd/jntpdn \
 		;
 
 build_vanilla:
@@ -50,6 +52,7 @@ build_bsd:
 		-arch=$(XC_ARCH) \
 		-parallel=$(XC_PARALLEL) \
 		-output=$(OUTPUT)/$(NAME)_{{.OS}}_{{.Arch}} \
+		github.com/deogracia/jntpdn/cmd/jntpdn \
 		;
 
 # vi:syntax=make
