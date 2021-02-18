@@ -41,7 +41,7 @@ build_vanilla:
 	$(info ***************** Build the artefacts for the current OS & ARCH *********)
 
 	mkdir -p ${OUTPUT}
-	go build -o $(OUTPUT)/$(NAME)_test
+	go build -o $(OUTPUT)/$(NAME)_test github.com/deogracia/jntpdn/cmd/jntpdn
 
 build_bsd:
 	$(info ***************** Cross Build the artefacts for *BSD ********************)
