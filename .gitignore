@@ -6,6 +6,7 @@
 
 # Test binary, build with `go test -c`
 *.test
+coverage.*
 
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
@@ -14,3 +15,6 @@
 output
 # goreleaser output directory
 dist
+
+# generated docs directroy
+jntpdn-docs
