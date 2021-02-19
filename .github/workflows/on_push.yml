@@ -1,3 +1,4 @@
+---
 name: Checks on_push
 
 on:
@@ -13,29 +14,29 @@ jobs:
     name: windows-latest - checks & build
     runs-on: windows-latest
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-      with:
-        path: "${{env.checkout_dir}}"
-    - name: Run ci target
-      shell: bash
-      run:  |
-          PATH="/$(go env GOPATH | sed 's/\\/\//g'| sed 's/://' )/bin":$PATH
-          go get github.com/securego/gosec/cmd/gosec
-          which gosec
-          go get github.com/mitchellh/gox
-          which gox
-          go get golang.org/x/lint/golint
-          which golint
-          go get github.com/fzipp/gocyclo/cmd/gocyclo
-          which gocyclo
-          cd $GITHUB_WORKSPACE/$checkout_dir
-          make ci_windows
-    - name: Archive artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: windows-latest - generated executables
-        path: ${{ github.workspace }}/${{ env.checkout_dir }}/output
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          path: "${{env.checkout_dir}}"
+      - name: Run ci target
+        shell: bash
+        run: |
+            PATH="/$(go env GOPATH | sed 's/\\/\//g'| sed 's/://' )/bin":$PATH
+            go get github.com/securego/gosec/cmd/gosec
+            which gosec
+            go get github.com/mitchellh/gox
+            which gox
+            go get golang.org/x/lint/golint
+            which golint
+            go get github.com/fzipp/gocyclo/cmd/gocyclo
+            which gocyclo
+            cd $GITHUB_WORKSPACE/$checkout_dir
+            make ci
+      - name: Archive artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: windows-latest - generated executables
+          path: ${{ github.workspace }}/${{ env.checkout_dir }}/output
 
   others-os_checks:
     name: ${{ matrix.os }} - checks & build
@@ -44,29 +45,29 @@ jobs:
       matrix:
         os: [ubuntu-latest, macos-latest]
     steps:
-    - name: Define and add GOPATH to PATH
-      run: |
-          echo "GOPATH=${GITHUB_WORKSPACE}/go" >> ${GITHUB_ENV}
-          echo "${GITHUB_WORKSPACE}/go/bin" >> ${GITHUB_PATH}
-    - name: Checkout code
-      uses: actions/checkout@v2
-      with:
-        path: "${{env.checkout_dir}}"
-    - name: Run ci target
-      run: |
-          go get github.com/securego/gosec/cmd/gosec
-          go get github.com/mitchellh/gox
-          go get golang.org/x/lint/golint
-          go get github.com/fzipp/gocyclo/cmd/gocyclo
-          cd $GITHUB_WORKSPACE/$checkout_dir
-          make ci
-    - name: Build BSD artefacts
-      if: ${{ matrix.os == 'ubuntu-latest' }}
-      run: |
-          cd $GITHUB_WORKSPACE/$checkout_dir
-          make build_bsd
-    - name: Archive artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: ${{ matrix.os }} - generated executables
-        path: ${{ github.workspace }}/${{ env.checkout_dir }}/output
+      - name: Define and add GOPATH to PATH
+        run: |
+            echo "GOPATH=${GITHUB_WORKSPACE}/go" >> ${GITHUB_ENV}
+            echo "${GITHUB_WORKSPACE}/go/bin" >> ${GITHUB_PATH}
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          path: "${{env.checkout_dir}}"
+      - name: Run ci target
+        run: |
+            go get github.com/securego/gosec/cmd/gosec
+            go get github.com/mitchellh/gox
+            go get golang.org/x/lint/golint
+            go get github.com/fzipp/gocyclo/cmd/gocyclo
+            cd $GITHUB_WORKSPACE/$checkout_dir
+            make ci
+      - name: Build BSD artefacts
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+        run: |
+            cd $GITHUB_WORKSPACE/$checkout_dir
+            make build_bsd
+      - name: Archive artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ matrix.os }} - generated executables
+          path: ${{ github.workspace }}/${{ env.checkout_dir }}/output

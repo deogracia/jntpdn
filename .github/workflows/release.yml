@@ -10,7 +10,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Unshallow fetch
-        run:  git fetch --prune --unshallow
+        run: git fetch --prune --unshallow
       - name: Relase via goreleaser
         uses: goreleaser/goreleaser-action@v2.2.1
         with:

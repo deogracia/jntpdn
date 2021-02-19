@@ -15,7 +15,6 @@ all: clean install_deps quality security test build
 
 # ci*: run tests & build ouput based on runing OS
 ci: clean install_deps quality security test build_vanilla
-ci_windows: clean install_deps quality security_w test build_vanilla
 
 quality: check_fmt vet lint gocyclo
 
@@ -43,12 +42,6 @@ clean: ## Clean it up!
 	go clean -cache -testcache -modcache
 
 security: ## Run gosec
-	$(call print-target)
-	$(info ***************** Security ***********************************)
-	gosec ./...
-	@echo "[OK] Go security check is done!"
-
-security_w: ## Run gosec on windows
 	$(call print-target)
 	$(info ***************** Security ***********************************)
 	gosec "./..."
