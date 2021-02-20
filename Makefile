@@ -6,7 +6,7 @@ SRC=$(shell find . -name "*.go")
 
 .PHONY: all clean ci build build_vanilla build_bsd test check_fmt fmt vet security security_w
 .PHONY: lint quality gocyclo goimports formatcode
-.PHONY: format_and_test
+.PHONY: format_and_test showcoverage
 
 # Default task, since it's the first one
 all: clean install_deps quality security test build
@@ -23,7 +23,7 @@ formatcode: goimports fmt
 
 format_and_test: formatcode test
 
-test: check_fmt vet
+test: check_fmt vet ## Run tests
 	$(call print-target)
 	$(info ***************** Run tests ***********************************)
 	go test -race -covermode=atomic -coverprofile=coverage.out -v -count=1  ./...
@@ -96,6 +96,11 @@ vet: ## Run go get
 	$(info ***************** Run go vet ***********************************)
 	go vet ./...
 	@echo "[OK] Go vet is done!"
+
+showcoverage: test
+	$(call print-target)
+	$(info ***************** Show coverage in browser *********************)
+	go tool cover -html=coverage.out
 
 .PHONY: help
 help:
