@@ -10,7 +10,9 @@ before:
   hooks:
     - go mod download
 builds:
-  - env:
+  - id: jntpdn
+    main: ./cmd/jntpdn/main.go
+    env:
       - CGO_ENABLED=0
     goos:
       - linux
