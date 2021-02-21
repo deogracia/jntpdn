@@ -2,6 +2,7 @@ SHELL=/bin/bash
 OUTPUT=./output
 CMD_OUTPUTS=./jntpdn-docs
 GO_STUFF=$(wildcard coverage.*)
+GORELEASER_STUFF=./dist
 SRC=$(shell find . -name "*.go")
 
 .PHONY: all clean ci build build_vanilla build_bsd test check_fmt fmt vet security security_w
@@ -38,7 +39,7 @@ output: ## Create "output" directory
 clean: ## Clean it up!
 	$(call print-target)
 	$(info ***************** Clean ***********************************)
-	rm -rf $(OUTPUT) $(CMD_OUTPUTS) ${GO_STUFF}
+	rm -rf $(OUTPUT) $(CMD_OUTPUTS) ${GO_STUFF} ${GORELEASER_STUFF}
 	go clean -cache -testcache -modcache
 
 security: ## Run gosec
